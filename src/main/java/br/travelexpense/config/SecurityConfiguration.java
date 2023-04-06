@@ -17,6 +17,8 @@ import br.travelexpense.utils.CookieHelper;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+	private static final long VADLID_TOKEN_TIME = 604800L; //7 dias
+
 	private final UserDetailsServiceImpl userDetailsService;
 
 	public SecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
@@ -37,7 +39,7 @@ public class SecurityConfiguration {
 			.cors().disable()
 			.csrf().disable()
 			.formLogin().disable()
-			.rememberMe().alwaysRemember(true).key("session_key").tokenValiditySeconds(604800).rememberMeCookieName("LOGADO")
+			.rememberMe().alwaysRemember(true).key("session_key").tokenValiditySeconds(VADLID_TOKEN_TIME).rememberMeCookieName("LOGADO")
 			.and()
 			.logout().deleteCookies("JSESSIONID", CookieHelper.ID_EMPRESA_COOKIE)
 			.and();
