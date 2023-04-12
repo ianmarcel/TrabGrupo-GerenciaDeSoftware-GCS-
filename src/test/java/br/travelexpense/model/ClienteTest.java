@@ -2,63 +2,64 @@ package br.travelexpense.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ClienteTest {
 
+	private Cliente c;
+
 	@BeforeEach
 	void setUp() throws Exception {
+		c  = new Cliente();
+		
 	}
 
-	@Test
+	@Test 
 	void testGetEndereco() {
-		fail("Not yet implemented");
+		Endereco e = new Endereco();
+		e.setComplemento("apto 200");
+		e.setId(1); 
+		e.setMunicipio("alderan");
+		e.setRua("rua x");
+		e.setNumero("12");
+		e.setUf("mi");
+		c.setEndereco(e);
+		assertEquals(e,c.getEndereco());
 	}
 
-	@Test
-	void testSetEndereco() {
-		fail("Not yet implemented");
-	}
 
-	@Test
+	 
+	@Test  
 	void testGetViagens() {
-		fail("Not yet implemented");
+		Viagem v = new Viagem();
+		List <Viagem> listaDeViagens = new ArrayList<Viagem>();
+		listaDeViagens.add(v);
+		v.setCliente(this.c); 
+		c.setViagens(listaDeViagens);
+	    assertEquals(listaDeViagens,c.getViagens()); 
 	}
 
-	@Test
-	void testSetViagens() {
-		fail("Not yet implemented");
-	}
-
-	@Test
+	@Test 
 	void testGetId() {
-		fail("Not yet implemented");
+		c.setId(1);
+		assertEquals(1,c.getId());
 	}
 
-	@Test
-	void testSetId() {
-		fail("Not yet implemented");
-	}
-
-	@Test
+	@Test  
 	void testGetCnpj() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetCnpj() {
-		fail("Not yet implemented");
+		c.setCnpj("cnpj");
+		assertEquals("cnpj",c.getCnpj());
+		
 	}
 
 	@Test
 	void testGetNome() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetNome() {
-		fail("Not yet implemented");
+		c.setNome("nome");
+		assertEquals("nome",c.getNome());
 	}
 
 }
