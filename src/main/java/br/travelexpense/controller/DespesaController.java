@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -32,8 +31,8 @@ public class DespesaController {
        return despesaRepository.save(despesa);
     }
 
-    @PostMapping("add/{id}")
-    public Despesa addById(@RequestBody Despesa despesa, @PathVariable Long id){
+    @PostMapping("add/viagem/{id}")
+    public Despesa addById(@RequestBody Despesa despesa, @PathVariable Long id) {
         Viagem viagem;
         viagem = viagemRepository.getReferenceById(id);
 
