@@ -23,10 +23,18 @@ public class OrcamentoTest {
         o.setViagem(v);
         assertEquals(v, o.getViagem());
     }
+
     @Test
     void testGetValor(){
         o.setValor(12);
         assertEquals(12, o.getValor());
+    }
+    
+    // @@ TESTE COM VALOR NEGATIVO
+    @Test
+    void testGetValorNegativo(){
+        o.setValor(-12);
+        assertEquals(-12, o.getValor());
     }
 
     @Test 

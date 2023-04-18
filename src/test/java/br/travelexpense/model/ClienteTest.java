@@ -49,6 +49,13 @@ class ClienteTest {
 		assertEquals(1,c.getId());
 	}
 
+	//Teste com Id negativo 
+	@Test 
+	void testGetIdNegativo() {
+		c.setId(-1);
+		assertEquals(-1,c.getId());
+	}
+
 	@Test  
 	void testGetCnpj() {
 		c.setCnpj("cnpj");

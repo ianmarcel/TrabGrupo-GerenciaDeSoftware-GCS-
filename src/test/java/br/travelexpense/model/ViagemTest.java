@@ -38,9 +38,19 @@ class ViagemTest {
      @Test
      void testGetOrçamento(){
         Orcamento o = new Orcamento();
+        o.setValor(1000);
         v.setOrcamento(o);
         assertEquals(o, v.getOrcamento());
     }
+
+      //TESTE COM VALOR NEGATIVO
+      @Test
+      void testGetOrçamentoValorInvalido(){
+         Orcamento o = new Orcamento();
+         o.setValor(-1000);
+         v.setOrcamento(o);
+         assertEquals(o, v.getOrcamento());
+     }
 
     @Test
      void testGetAnotacoes(){
