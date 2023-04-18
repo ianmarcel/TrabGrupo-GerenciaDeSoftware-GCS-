@@ -33,11 +33,20 @@ public class DespesaTest {
         assertEquals("titulo", d.getTitulo());
     }
 
+    @Test
     void testGetValor(){
         d.setValor(12);
         assertEquals(12, d.getValor());
     }
 
+    // Teste com VALOR NEGATIVO
+    @Test
+    void testGetValorNegativo(){
+        d.setValor(-12);
+        assertEquals(-12, d.getValor());
+    }
+
+    @Test
     void testGetViagens(){
         Viagem v = new Viagem();
         d.setViagem(v);

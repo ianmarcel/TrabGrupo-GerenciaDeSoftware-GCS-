@@ -38,6 +38,13 @@ class EmpresaTeste {
 		assertEquals(1,empresa.getId());
 	}
 
+	//TESTE COM ID NEGATIVO 
+	@Test 
+	void testGetIdNegativo() {
+		empresa.setId(-1);
+		assertEquals(-1,empresa.getId());
+	}
+
 	@Test  
 	void testGetCnpj() {
 		empresa.setCnpj("cnpj");

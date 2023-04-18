@@ -38,6 +38,14 @@ import org.junit.jupiter.api.Test;
         assertEquals("mg",e.getUf());
     }
 
+    // TESTE COM UF N EXISTENTE
+    @Test
+    void testGetUfNexistente(){
+        e.setUf("mj");
+        assertEquals("mj",e.getUf());
+    }
+
+    
     @Test
     void testComplemento(){
         e.setComplemento("complemento");
