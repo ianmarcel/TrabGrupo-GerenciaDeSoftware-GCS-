@@ -1,13 +1,10 @@
 package br.travelexpense.controller;
 
-import br.travelexpense.model.Cliente;
 import br.travelexpense.model.Orcamento;
 import br.travelexpense.model.Viagem;
-import br.travelexpense.repository.ClienteRepository;
 import br.travelexpense.repository.OrcamentoRepository;
 import br.travelexpense.repository.ViagemRepository;
 
-import org.aspectj.weaver.ast.Or;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,11 +25,24 @@ public class OrcamentoController {
 
     @PostMapping("add")
     public Orcamento add(@RequestBody Orcamento orcamento){
-    	Viagem v = viagemRepository.findById(orcamento.getViagem().getId()).get();
-    	orcamento.setViagem(v);
-    	v.setOrcamento(orcamento);
+    	Viagem viagem = viagemRepository.findById(orcamento.getViagem().getId()).get();
+    	orcamento.setViagem(viagem);
+    	viagem.setOrcamento(orcamento);
        return orcamentoRepository.save(orcamento);
     }
+
+    @PostMapping("add/viagem/{id}")
+    public Orcamento addById(@RequestBody Orcamento orcamento, @PathVariable Long id) {
+        Viagem viagem;
+        viagem = viagemRepository.getReferenceById(id);
+
+        viagem.setOrcamento(orcamento);
+        viagemRepository.save(viagem);
+
+        return orcamento;
+    }
+
+
 
     @GetMapping("get/{id}")
     public Orcamento get(@PathVariable Long id){
