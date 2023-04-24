@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 			.cors().disable()
 			.csrf().disable()
 			.formLogin().disable()
-			.rememberMe().alwaysRemember(true).key("session_key").tokenValiditySeconds(VADLID_TOKEN_TIME).rememberMeCookieName("LOGADO")
+			.rememberMe().alwaysRemember(true).key("session_key").tokenValiditySeconds((int) VADLID_TOKEN_TIME).rememberMeCookieName("LOGADO")
 			.and()
 			.logout().deleteCookies("JSESSIONID", CookieHelper.ID_EMPRESA_COOKIE)
 			.and();
