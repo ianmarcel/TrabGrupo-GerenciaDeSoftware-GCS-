@@ -3,6 +3,7 @@ services:
   db:
     image: mysql:latest
     restart: always
+    container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: root@travelexpense
       MYSQL_DATABASE: travelexpense
