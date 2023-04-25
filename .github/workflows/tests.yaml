@@ -17,18 +17,13 @@ jobs:
     - name: Checkout do repositório
       uses: actions/checkout@v2
 
-    - name: Iniciar o docker-compose
-      run: docker-compose up -d
-
-    - name: Aguardar pelo banco de dados
+    - name: Testes com maven
       run: |
+        docker-compose up -d
         until docker-compose exec -T mysql mysql --user=root --password=root@travelexpense --execute="SELECT 1"; do
           echo "Aguardando pelo banco de dados estar pronto..."
           sleep 1
         done
-
-    - name: Executar os testes com Maven
-      run: |
         mvn test
 
     - name: Parar os serviços do docker-compose
