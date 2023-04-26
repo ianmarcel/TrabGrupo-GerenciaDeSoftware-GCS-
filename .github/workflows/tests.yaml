@@ -17,8 +17,18 @@ jobs:
     - name: Checkout do repositório
       uses: actions/checkout@v2
 
-    - name: Testes
-      run: |
-        docker-compose up -d
-        mvn test
-        docker-compose down
+    - name: Setup JDK
+      uses: actions/setupjava@3
+      with:
+        java-version: '17'
+        distribuition: 'temurin'
+        cache: maven
+
+    - name: Iniciando o banco no docker
+      run: docker-compose up -d
+
+    - name: Testes do spring com maven
+      run: mvn test
+    
+    - name: Parando o container
+      run: docker-compose down
