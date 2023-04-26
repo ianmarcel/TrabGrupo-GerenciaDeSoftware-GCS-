@@ -31,4 +31,5 @@ jobs:
       run: mvn test
     
     - name: Parando o container
+      if: always()
       run: docker-compose down
