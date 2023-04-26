@@ -20,9 +20,5 @@ jobs:
     - name: Testes
       run: |
         docker-compose up -d
-        until docker exec -it mysql_db mysql --user=root --password=root@travelexpense --execute="SELECT 1"; do
-          echo "Aguardando pelo banco de dados estar pronto..."
-          sleep 1
-        done
         mvn test
         docker-compose down
