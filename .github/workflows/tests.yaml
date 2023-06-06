@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,3 +33,20 @@ jobs:
     - name: Parando o container
       if: always()
       run: docker-compose down
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v2
+
+      - name: Iniciar os containers
+        run: docker-compose up -d
+
+      - name: Verificar os containers
+        run: docker ps
+
+      - name: Parando o container
+        if: always()
+        run: docker-compose down
+
