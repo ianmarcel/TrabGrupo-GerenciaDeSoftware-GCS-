@@ -5,12 +5,14 @@ import io.github.cdimascio.dotenv.DotenvBuilder;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class EnvLoader {
 
     @PostConstruct
+    @Bean
     public void init() {
         Dotenv dotenv = Dotenv.configure().load();
         System.getenv().forEach((name, value) -> {
