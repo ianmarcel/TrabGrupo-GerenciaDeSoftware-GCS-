@@ -22,7 +22,7 @@ jobs:
 
     - name: Aguardar pelo banco de dados
       run: |
-        until docker-compose exec -T mysql mysql --user=root --password=root@travelexpense --execute="SELECT 1"; do
+        until docker-compose exec -T mysql mysqladmin ping -h localhost; do
           echo "Aguardando pelo banco de dados estar pronto..."
           sleep 1
         done
