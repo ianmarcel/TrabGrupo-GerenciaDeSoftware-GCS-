@@ -8,7 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,6 +19,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import br.travelexpense.model.Cliente;
 import br.travelexpense.model.Endereco;
 import br.travelexpense.model.Viagem;
+import br.travelexpense.utils.RandomNameGenerator;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -47,11 +51,12 @@ public class ClienteControllerTest {
         Endereco endereco = new Endereco();
         Cliente clientDto = new Cliente();
         List<Viagem> listaViagems = new ArrayList<Viagem>();
-        clientDto.setNome("Anaa");
-        clientDto.setCnpj("2139198321798123792");
+        RandomNameGenerator randon = new RandomNameGenerator();
+        clientDto.setNome(randon.generateRandomName());
+        clientDto.setCnpj(randon.generateRandomNumber());
         clientDto.setEndereco(endereco);
         clientDto.setViagens(listaViagems);
-        clientDto.setId(12l);
+        clientDto.setId(100002);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
@@ -66,8 +71,9 @@ public class ClienteControllerTest {
         Endereco endereco = new Endereco();
         Cliente clientDto = new Cliente();
         List<Viagem> listaViagems = new ArrayList<Viagem>();
-        clientDto.setNome("Ana");
-        clientDto.setCnpj("213919832179812379");
+        RandomNameGenerator randon = new RandomNameGenerator();
+        clientDto.setNome(randon.generateRandomName());
+        clientDto.setCnpj(randon.generateRandomNumber());
         clientDto.setEndereco(endereco);
         clientDto.setViagens(listaViagems);
         clientDto.setId(1l);
@@ -75,10 +81,14 @@ public class ClienteControllerTest {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(clientDto);
-        this.mockMvc.perform(post("/cliente/add")
+        MvcResult result = this.mockMvc.perform(post("/cliente/add")
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ=").contentType(APPLICATION_JSON_UTF8).content(requestJson))
-        .andExpect(status().isOk());
-        this.mockMvc.perform(get("/cliente/get/"+clientDto.getId()
+        .andExpect(status().isOk()).andReturn();
+        String response = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonResponse = objectMapper.readTree(response);
+        String clienteId = jsonResponse.get("id").asText();
+        this.mockMvc.perform(get("/cliente/get/"+clienteId
         )
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ="))
         .andExpect(status().isOk());
@@ -89,8 +99,9 @@ public class ClienteControllerTest {
         Endereco endereco = new Endereco();
         Cliente clientDto = new Cliente();
         List<Viagem> listaViagems = new ArrayList<Viagem>();
-        clientDto.setNome("Ana");
-        clientDto.setCnpj("213919832179812379");
+        RandomNameGenerator randon = new RandomNameGenerator();
+        clientDto.setNome(randon.generateRandomName());
+        clientDto.setCnpj(randon.generateRandomNumber());
         clientDto.setEndereco(endereco);
         clientDto.setViagens(listaViagems);
         clientDto.setId(1l);
@@ -98,10 +109,14 @@ public class ClienteControllerTest {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(clientDto);
-        this.mockMvc.perform(post("/cliente/add")
+        MvcResult result = this.mockMvc.perform(post("/cliente/add")
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ=").contentType(APPLICATION_JSON_UTF8).content(requestJson))
-        .andExpect(status().isOk());
-        this.mockMvc.perform(delete("/cliente/delete/"+clientDto.getId()
+        .andExpect(status().isOk()).andReturn();
+        String response = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonResponse = objectMapper.readTree(response);
+        String clienteId = jsonResponse.get("id").asText();
+        this.mockMvc.perform(delete("/cliente/delete/"+clienteId
         )
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ="))
         .andExpect(status().isOk());

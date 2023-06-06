@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -18,6 +20,7 @@ import br.travelexpense.model.Cliente;
 import br.travelexpense.model.Endereco;
 import br.travelexpense.model.Funcionario;
 import br.travelexpense.model.Viagem;
+import br.travelexpense.utils.RandomNameGenerator;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,13 +53,14 @@ public class FuncionarioControllerTest {
         Funcionario funcionario = new Funcionario();
         Endereco endereco = new Endereco();
         List<Viagem> listaViagem = new ArrayList<Viagem>();
+        RandomNameGenerator random = new RandomNameGenerator();
         funcionario.setId(1l);
         funcionario.setEndereco(endereco);
-        funcionario.setCargo("cargo novo");
-        funcionario.setCpf("q1321123123132");
-        funcionario.setNome("null");
-        funcionario.setSenha("null");
-        funcionario.setSetor("null");
+        funcionario.setCargo(random.generateRandomName());
+        funcionario.setCpf(random.generateRandomNumber());
+        funcionario.setNome(random.generateRandomName());
+        funcionario.setSenha(random.generateRandomNumber());
+        funcionario.setSetor(random.generateRandomName());
         funcionario.setViagens(listaViagem);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -69,27 +73,30 @@ public class FuncionarioControllerTest {
 
     @Test
     public void pegarFuncionarioPorId() throws Exception{
-        Random random = new Random();
-        long numeroAleatorio = random.nextLong();
         Funcionario funcionario = new Funcionario();
         Endereco endereco = new Endereco();
         List<Viagem> listaViagem = new ArrayList<Viagem>();
-        funcionario.setId(numeroAleatorio);
+        RandomNameGenerator random = new RandomNameGenerator();
+        funcionario.setId(1l);
         funcionario.setEndereco(endereco);
-        funcionario.setCargo("cargo novo");
-        funcionario.setCpf("q13211231231336757");
-        funcionario.setNome("null2221321");
-        funcionario.setSenha("null221");
-        funcionario.setSetor("null221");
+        funcionario.setCargo(random.generateRandomName());
+        funcionario.setCpf(random.generateRandomNumber());
+        funcionario.setNome(random.generateRandomName());
+        funcionario.setSenha(random.generateRandomName());
+        funcionario.setSetor(random.generateRandomName());
         funcionario.setViagens(listaViagem);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(funcionario);
-        this.mockMvc.perform(post("/funcionario/add")
+        MvcResult result = this.mockMvc.perform(post("/funcionario/add")
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ=").contentType(APPLICATION_JSON_UTF8).content(requestJson))
-        .andExpect(status().isOk());
-        this.mockMvc.perform(get("/funcionario/get/"+37)
+        .andExpect(status().isOk()).andReturn();
+        String response = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonResponse = objectMapper.readTree(response);
+        String funcionarioId = jsonResponse.get("id").asText();
+        this.mockMvc.perform(get("/funcionario/get/"+funcionarioId)
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ="))
         .andExpect(status().isOk());
     }
@@ -97,38 +104,40 @@ public class FuncionarioControllerTest {
 
     @Test
     public void editarFuncionario() throws Exception{
-        Random random = new Random();
-        long numeroAleatorio = random.nextLong();
         Funcionario funcionario = new Funcionario();
         Endereco endereco = new Endereco();
         List<Viagem> listaViagem = new ArrayList<Viagem>();
-        funcionario.setId(numeroAleatorio);
+        RandomNameGenerator random = new RandomNameGenerator();
+        funcionario.setId(1l);
         funcionario.setEndereco(endereco);
-        funcionario.setCargo("cargo novo");
-        funcionario.setCpf("q132112312313367123");
-        funcionario.setNome("null22213212");
-        funcionario.setSenha("null2212");
-        funcionario.setSetor("null2212");
+        funcionario.setCargo(random.generateRandomName());
+        funcionario.setCpf(random.generateRandomNumber());
+        funcionario.setNome(random.generateRandomName());
+        funcionario.setSenha(random.generateRandomName());
+        funcionario.setSetor(random.generateRandomName());
         funcionario.setViagens(listaViagem);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(funcionario);
-        this.mockMvc.perform(post("/funcionario/add")
+        MvcResult result = this.mockMvc.perform(post("/funcionario/add")
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ=").contentType(APPLICATION_JSON_UTF8).content(requestJson))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk()).andReturn();
+        String response = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonResponse = objectMapper.readTree(response);
+        Long funcionarioId = Long.parseLong(jsonResponse.get("id").asText());
         Funcionario funcionarioAux = new Funcionario();
         Endereco enderecoAux = new Endereco();
         List<Viagem> listaViagemAux = new ArrayList<Viagem>();
-        funcionarioAux.setId((long)37);
+        funcionarioAux.setId(funcionarioId);
         funcionarioAux.setEndereco(enderecoAux);
-        funcionarioAux.setCargo("cargo novo");
-        funcionarioAux.setCpf("q132112312313367123");
-        funcionarioAux.setNome("null22213212");
-        funcionarioAux.setSenha("null2212");
-        funcionarioAux.setSetor("null2212");
+        funcionario.setCargo(random.generateRandomName());
+        funcionario.setCpf(random.generateRandomNumber());
+        funcionario.setNome(random.generateRandomName());
+        funcionario.setSenha(random.generateRandomName());
+        funcionario.setSetor(random.generateRandomName());
         funcionarioAux.setViagens(listaViagemAux);
-        ObjectMapper mapperAux = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter owAux = mapper.writer().withDefaultPrettyPrinter();
         String requestJsonAux=owAux.writeValueAsString(funcionario);
@@ -138,7 +147,30 @@ public class FuncionarioControllerTest {
     }
     @Test
     public void deletarClientePorId() throws Exception{
-        this.mockMvc.perform(delete("/funcionario/delete/"+37)
+        Funcionario funcionario = new Funcionario();
+        Endereco endereco = new Endereco();
+        List<Viagem> listaViagem = new ArrayList<Viagem>();
+        RandomNameGenerator random = new RandomNameGenerator();
+        funcionario.setId(1l);
+        funcionario.setEndereco(endereco);
+        funcionario.setCargo(random.generateRandomName());
+        funcionario.setCpf(random.generateRandomNumber());
+        funcionario.setNome(random.generateRandomName());
+        funcionario.setSenha(random.generateRandomName());
+        funcionario.setSetor(random.generateRandomName());
+        funcionario.setViagens(listaViagem);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson=ow.writeValueAsString(funcionario);
+        MvcResult result = this.mockMvc.perform(post("/funcionario/add")
+        .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ=").contentType(APPLICATION_JSON_UTF8).content(requestJson))
+        .andExpect(status().isOk()).andReturn();
+        String response = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonResponse = objectMapper.readTree(response);
+        String funcionarioId = jsonResponse.get("id").asText();
+        this.mockMvc.perform(delete("/funcionario/delete/"+funcionarioId)
         .header("Authorization", "Basic dXNlcjplNDZhZjMyMS02NGY5LTQxZDItOTU3OC00NWQ0YmU0YzRmMGQ="))
         .andExpect(status().isOk());
     }
