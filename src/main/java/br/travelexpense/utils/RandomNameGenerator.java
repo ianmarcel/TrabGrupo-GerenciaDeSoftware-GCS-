@@ -52,4 +52,28 @@ public class RandomNameGenerator {
         return String.valueOf(randomNumber3 + randomNumber1 + randomNumber2);
     }
 
+    public Double generateRandomDouble() {
+        Random random = new Random();
+        int min = 1; // Valor mínimo do intervalo
+        int max = 100; // Valor máximo do intervalo
+
+        // Gera um número aleatório entre min (inclusive) e max (exclusive)
+        Double randomNumber1 = random.nextDouble(max - min) + min;
+        Double randomNumber2 = random.nextDouble(max - min) + min;
+        Double randomNumber3 = random.nextDouble(max - min) + min;
+        return randomNumber3 + randomNumber1 + randomNumber2;
+    }
+
+    public Long generateRandomLong() {
+        Random random = new Random();
+        long min = 1; // Valor mínimo do intervalo
+        long max = 100; // Valor máximo do intervalo
+
+        // Gera um número aleatório entre min (inclusive) e max (exclusive)
+        Long randomNumber1 = random.nextLong(max - min) + min;
+        Long randomNumber2 = random.nextLong(max - min) + min;
+        Long randomNumber3 = random.nextLong(max - min) + min;
+        return randomNumber3 + randomNumber1 + randomNumber2;
+    }
+
 }
