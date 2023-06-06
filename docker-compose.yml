@@ -18,7 +18,7 @@ services:
       retries: 15
   app:
     container_name: app
-    build: ./Dockerfile
+    build: .
     ports:
       - "8080:8080"
     environment:
