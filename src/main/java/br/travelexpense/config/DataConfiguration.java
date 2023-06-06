@@ -18,6 +18,8 @@ public class DataConfiguration {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
+		System.out.println("Profile default rodando");
+
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://db:3306/travelexpense");
 		dataSource.setUsername("root");
@@ -30,6 +32,7 @@ public class DataConfiguration {
 	@Bean
 	public DataSource testdataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		System.out.println("Profile test rodando");
 
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3333/travelexpense");
