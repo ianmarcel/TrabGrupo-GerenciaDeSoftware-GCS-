@@ -16,6 +16,9 @@ public class DataConfiguration {
 	public DataSource dataSource() {
 		String host = System.getenv("DB_HOST");
 		String port = System.getenv("DB_PORT");
+
+		System.out.println(host);
+		System.out.println(port);
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

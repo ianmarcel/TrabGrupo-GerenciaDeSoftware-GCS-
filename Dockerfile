@@ -1,5 +1,7 @@
 FROM maven:latest AS build
 WORKDIR /app
+ENV DB_HOST=db
+ENV DB_PORT=3306
 COPY pom.xml .
 RUN mvn install
 COPY src ./src
