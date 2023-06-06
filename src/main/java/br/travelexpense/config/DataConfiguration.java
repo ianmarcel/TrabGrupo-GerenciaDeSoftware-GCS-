@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
@@ -12,17 +13,26 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Configuration
 public class DataConfiguration {
 
+	@Profile("!test")
 	@Bean
 	public DataSource dataSource() {
-		String host = System.getenv("DB_HOST");
-		String port = System.getenv("DB_PORT");
-
-		System.out.println(host);
-		System.out.println(port);
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://" + host + ":" + port + "/travelexpense");
+		dataSource.setUrl("jdbc:mysql://db:3306/travelexpense");
+		dataSource.setUsername("root");
+		dataSource.setPassword("root@travelexpense");
+
+		return dataSource;
+	}
+
+	@Profile("test")
+	@Bean
+	public DataSource testdataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost:3333/travelexpense");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root@travelexpense");
 

@@ -28,7 +28,7 @@ jobs:
         cache: maven
 
     - name: Testes do spring com maven
-      run: mvn test
+      run: mvn test -Dspring.profiles.active=test
     
     - name: Parando o container
       if: always()
