@@ -20,12 +20,7 @@ jobs:
     - name: Iniciar o docker-compose
       run: docker-compose up -d
 
-    - name: Aguardar pelo banco de dados
-      run: |
-        until docker-compose exec -T mysql mysqladmin ping -h localhost; do
-          echo "Aguardando pelo banco de dados estar pronto..."
-          sleep 1
-        done
+    
     - name: Executar os testes com Maven
       run: |
         mvn test
