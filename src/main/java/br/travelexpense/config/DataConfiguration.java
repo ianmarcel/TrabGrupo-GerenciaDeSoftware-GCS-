@@ -35,7 +35,7 @@ public class DataConfiguration {
 		System.out.println("Profile test rodando");
 
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3333/travelexpense");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/travelexpense");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root@travelexpense");
 
