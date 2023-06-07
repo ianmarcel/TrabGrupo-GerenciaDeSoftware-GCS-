@@ -2,6 +2,7 @@ package br.travelexpense.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,8 +25,9 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
+	@Profile("!test")
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeHttpRequests()
 				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
@@ -35,6 +37,20 @@ public class SecurityConfiguration {
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(http)))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager(http)))
+				.cors().disable()
+				.csrf().disable()
+				.formLogin().disable();
+		return http.build();
+	}
+
+	@Bean
+	@Profile("test")
+	SecurityFilterChain filterChainTest(HttpSecurity http) throws Exception {
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+				.and()
+				.authorizeHttpRequests()
+				.anyRequest().permitAll()
+				.and()
 				.cors().disable()
 				.csrf().disable()
 				.formLogin().disable();
