@@ -2,6 +2,8 @@ package br.travelexpense.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,14 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import br.travelexpense.utils.CookieHelper;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-	private static final int VADLID_TOKEN_TIME = 604800; // 7 dias
-
+	public static final String SIGN_UP_URL = "/auth/login";
 	private final UserDetailsServiceImpl userDetailsService;
 
 	public SecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
@@ -26,24 +25,35 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
+	@Profile("!test")
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-				// .and().authorizeHttpRequests().anyRequest().permitAll()
-				// .httpBasic()
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeHttpRequests()
-				// .antMatchers("/auth/**").permitAll()
-				// .antMatchers("/empresa*/**").hasAnyRole("GESTOR", "DONO")
+				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+				.antMatchers("/auth/**").permitAll()
+				.antMatchers("/empresa*/**").hasAnyRole("GESTOR", "DONO")
+				.anyRequest().authenticated()
+				.and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(http)))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager(http)))
+				.cors().disable()
+				.csrf().disable()
+				.formLogin().disable();
+		return http.build();
+	}
+
+	@Bean
+	@Profile("test")
+	SecurityFilterChain filterChainTest(HttpSecurity http) throws Exception {
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+				.and()
+				.authorizeHttpRequests()
 				.anyRequest().permitAll()
 				.and()
 				.cors().disable()
 				.csrf().disable()
-				.formLogin().disable()
-				.rememberMe().alwaysRemember(true).key("session_key").tokenValiditySeconds(VADLID_TOKEN_TIME)
-				.rememberMeCookieName("LOGADO")
-				.and()
-				.logout().deleteCookies("JSESSIONID", CookieHelper.ID_EMPRESA_COOKIE)
-				.and();
+				.formLogin().disable();
 		return http.build();
 	}
 

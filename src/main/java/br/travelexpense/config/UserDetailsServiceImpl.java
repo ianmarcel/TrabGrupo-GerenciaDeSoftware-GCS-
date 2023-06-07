@@ -15,24 +15,22 @@ import br.travelexpense.repository.FuncionarioRepository;
 @Repository
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
+
 	private final FuncionarioRepository repository;
 
 	public UserDetailsServiceImpl(FuncionarioRepository repository) {
 		this.repository = repository;
 	}
 
-
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-	Optional<Funcionario> funcionario = repository.findByCpf(username);
-	
-	if (funcionario.isEmpty()) {
-		throw new UsernameNotFoundException(username);
-	}
-		
+
+		Optional<Funcionario> funcionario = repository.findByCpf(username);
+
+		if (funcionario.isEmpty()) {
+			return null;
+		}
+
 		return new UserDetailsImpl(funcionario);
 	}
 
