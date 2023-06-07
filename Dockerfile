@@ -8,6 +8,6 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
-WORKDIR /api
+WORKDIR /app
 COPY --from=build app/target/travel-expense-1.0.0.jar app.jar
 CMD ["java", "-jar", "app.jar"]
