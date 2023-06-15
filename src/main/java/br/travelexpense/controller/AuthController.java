@@ -42,7 +42,7 @@ public class AuthController {
 		this.fRepository = fRepository;
 	}
 
-	@PostMapping("/login")
+	// @PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Map<String, Object> body, HttpServletResponse res) {
 
 		String cpf = (String) body.getOrDefault("login", "");
@@ -67,8 +67,7 @@ public class AuthController {
 			user.setId(func.getId());
 			user.setLogado(true);
 			user.setMessage("Logado com sucesso");
-		}		
-		catch (AuthenticationException ex) {
+		} catch (AuthenticationException ex) {
 			user.setMessage(ex.getMessage());
 			user.setLogado(false);
 		}

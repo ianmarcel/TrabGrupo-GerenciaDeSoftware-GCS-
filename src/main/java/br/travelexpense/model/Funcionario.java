@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Entity
-@FilterDef(name="funcionario", parameters=@ParamDef( name="funcionarioId", type="long" ) )
+@FilterDef(name = "funcionario", parameters = @ParamDef(name = "funcionarioId", type = "long"))
 public class Funcionario {
 
     @Id
@@ -41,7 +41,7 @@ public class Funcionario {
     private Endereco endereco;
 
     @ManyToMany(mappedBy = "funcionarios")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","funcionarios"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "funcionarios" })
     List<Viagem> viagens;
 
     public List<Viagem> getViagens() {
@@ -121,6 +121,7 @@ public class Funcionario {
         return "Funcionario{" +
                 "cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
+                ", senha='" + senha + '\'' +
                 '}';
     }
 }
