@@ -5,6 +5,9 @@
 
 O projeto escolhido é um sistema de gestão de viagens para pequenas e grandes organizações. Ele é separado em três componentes, sendo eles, um back-end em Java Spring, um front-end web e uma aplicação mobile. Toda a comunicação com o back-end é feita através de uma API Rest. Para este trabalho nós utilizamos o back-end em Java do projeto.
 
+## Melhorias:
+Foram realizadas correções de erros, remoção de código não usado, além da implementação de dois novos endpoints para facilitar o uso da API e uma alteração no sistema de autenticação.
+
 ### Integrantes e divisão de tarefas:
  - Carlos Júnior - Correções e remoção de código não utilizado
  - Ian Marcel - Testes de model
@@ -37,7 +40,5 @@ Para os testes de controller foi utilizada a estratégia de mocking nos seguinte
 Testes de DTO:
  - HeaderViagemDTO
  - UsuarioDTO
-
-
 
 
